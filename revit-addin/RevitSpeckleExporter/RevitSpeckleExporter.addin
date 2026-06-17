@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RevitAddIns>
+  <AddIn Type="Command">
+    <Text>Command RevitSpeckleExporter</Text>
+    <Description>Some description for RevitSpeckleExporter</Description>
+    <Assembly>RevitSpeckleExporter/RevitSpeckleExporter.dll</Assembly>
+    <FullClassName>RevitSpeckleExporter.Command</FullClassName>
+    <ClientId>f8f15d60-a15a-4c14-93f3-1780e8e11b75</ClientId>
+    <VendorId>Edit this in settings</VendorId>
+    <VendorDescription> (company + authors + website)</VendorDescription>
+  </AddIn>
+  <AddIn Type="Application">
+    <Name>Application RevitSpeckleExporter</Name>
+    <Assembly>RevitSpeckleExporter/RevitSpeckleExporter.dll</Assembly>
+    <FullClassName>RevitSpeckleExporter.App</FullClassName>
+    <ClientId>08fe2ba2-17c1-4bf9-b659-386d1a920449</ClientId>
+    <VendorId>Edit this in settings</VendorId>
+    <VendorDescription> (company + authors + website)</VendorDescription>
+  </AddIn>
+</RevitAddIns>
