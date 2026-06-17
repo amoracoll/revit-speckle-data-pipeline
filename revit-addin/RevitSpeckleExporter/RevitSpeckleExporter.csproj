@@ -177,15 +177,29 @@
         </When>
     </Choose>
     <ItemGroup>
+        <Reference Include="PresentationCore" Condition="'$(Configuration)' != 'R2025'" />
+        <Reference Include="WindowsBase" Condition="'$(Configuration)' != 'R2025'" />
+        <Reference Include="System.Drawing" Condition="'$(Configuration)' != 'R2025'" />
+        <Reference Include="System.Windows.Forms" Condition="'$(Configuration)' != 'R2025'" />
+        <EmbeddedResource Update="RevitSpeckleExporterResources.resx">
+            <Generator>ResXFileCodeGenerator</Generator>
+            <LastGenOutput>RevitSpeckleExporterResources.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <None Include="Resources\export.png" />
         <Compile Include="App.cs" />
+        <Compile Include="Commands\ExportToSpeckleCommand.cs" />
+        <Compile Include="Models\WallData.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
+        <Compile Include="Resources\IconHelper.cs" />
+        <Compile Include="RevitSpeckleExporterResources.Designer.cs">
+            <AutoGen>True</AutoGen>
+            <DependentUpon>RevitSpeckleExporterResources.resx</DependentUpon>
+            <DesignTime>True</DesignTime>
+        </Compile>
+        <Compile Include="Services\ElementDataExtractor.cs" />
         <Content Include="RevitSpeckleExporter.addin">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
-    </ItemGroup>
-    <ItemGroup>
-      <Folder Include="Models\" />
-      <Folder Include="Services\" />
     </ItemGroup>
     <Target Name="AfterClean">
         <Delete Files="$(AppData)\Autodesk\REVIT\Addins\$(RevitVersion)\RevitSpeckleExporter.addin" />
