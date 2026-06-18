@@ -1,6 +1,7 @@
-﻿#region System Namespaces
+#region System Namespaces
 using System;
 using System.Collections.Generic;
+using System.Windows.Interop;
 #endregion
 
 #region Autodesk Namespaces
@@ -9,8 +10,14 @@ using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
 #endregion
 
-#region RevitSpeckleExporter
+#region Speckle Namespaces
+using Speckle.Core.Models;
+#endregion
+
+#region RevitSpeckleExporter Namespaces
+using RevitSpeckleExporter.Models;
 using RevitSpeckleExporter.Services;
+using RevitSpeckleExporter.Views;
 #endregion
 
 namespace RevitSpeckleExporter.Commands
@@ -24,19 +31,39 @@ namespace RevitSpeckleExporter.Commands
             ElementSet elements)
         {
             UIApplication uiApp = commandData.Application;
-            Document doc = uiApp.ActiveUIDocument.Document;
+            Document document = uiApp.ActiveUIDocument.Document;
 
             try
             {
-                ElementDataExtractor extractor = new ElementDataExtractor();
-                List<Models.WallData> walls = extractor.ExtractWalls(doc);
+                SpeckleExportDialog dialog = new SpeckleExportDialog();
+                WindowInteropHelper owner = new WindowInteropHelper(System.Windows.Application.Current.MainWindow)
+                {
+                    Owner = uiApp.MainWindowHandle
+                };
 
-                // TODO: revit speckle exportes is not implemented yet
+                bool confirmed = dialog.ShowDialog(owner);
+
+                if (!confirmed)
+                {
+                    return Result.Cancelled;
+                }
+
+                List<WallData> walls = new ElementDataExtractor().ExtractWalls(document);
+
+                if (walls.Count == 0)
+                {
+                    return Result.Cancelled;
+                }
+
+                Base root = new SpeckleConverter().Convert(walls);
+
+                SpeckleService service = new SpeckleService(dialog.ServerUrl, dialog.StreamId, dialog.Token);
+
+                string commitId = service.SendAsync(root, $"Walls export — {document.Title}").GetAwaiter().GetResult();
+
                 TaskDialog.Show(
-                    "Revit Speckle Exporter",
-                    $"Se han extraído {walls.Count} muros del modelo.\n\n" +
-                    $"Ejemplo: {(walls.Count > 0 ? walls[0].ToString() : "N/A")}"
-                );
+                    "Export complete",
+                    $"Exported {walls.Count} walls.\nCommit: {commitId}\nStream: {dialog.StreamId}");
 
                 return Result.Succeeded;
             }

@@ -181,6 +181,8 @@
         <Reference Include="WindowsBase" Condition="'$(Configuration)' != 'R2025'" />
         <Reference Include="System.Drawing" Condition="'$(Configuration)' != 'R2025'" />
         <Reference Include="System.Windows.Forms" Condition="'$(Configuration)' != 'R2025'" />
+        <PackageReference Include="Speckle.Core" Version="2.19.5" />
+        <PackageReference Include="Speckle.Objects" Version="2.19.5" />
         <EmbeddedResource Update="RevitSpeckleExporterResources.resx">
             <Generator>ResXFileCodeGenerator</Generator>
             <LastGenOutput>RevitSpeckleExporterResources.Designer.cs</LastGenOutput>
@@ -197,6 +199,9 @@
             <DesignTime>True</DesignTime>
         </Compile>
         <Compile Include="Services\ElementDataExtractor.cs" />
+        <Compile Include="Services\SpeckleConverter.cs" />
+        <Compile Include="Services\SpeckleService.cs" />
+        <Compile Include="Views\SpeckleExportDialog.cs" />
         <Content Include="RevitSpeckleExporter.addin">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
